@@ -5,6 +5,8 @@
 import os
 # Importo la funcion sqrt(raiz) y fabs(valor absoluto)
 from math import sqrt, fabs
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 class Ecuacion_Cuadratica():
@@ -99,6 +101,25 @@ class Ecuacion_Cuadratica():
         print 'raices: '
         print
         print self.__raices
+    
+    def graficar(self):
+        a, b, c = self.__a, self.__b, self.__c
+        h, k = self.vertice()
+        ax = plt.subplot(111)
+
+        t = np.arange(-30.0, 30.0, 0.01)
+        s = a * (t ** 2) + b * t + c
+        line, = plt.plot(t, s, lw=2)
+        
+        plt.annotate(u'vértice', xy=(h, k), xytext=(h+5, k),
+                    arrowprops=dict(facecolor='black', shrink=0.05),
+                    )
+        
+        plt.xlabel('X')
+        plt.ylabel('Y')
+        plt.ylim(-2,2)
+        plt.grid(True)
+        plt.show()
 
 
 def main():
@@ -110,6 +131,7 @@ def main():
     ec.mostrar_raices()
     ec.mostrar_ecuacion_factorizada()
     ec.mostrar_vertice()
+    ec.graficar()
 
 
 if __name__ == '__main__':
