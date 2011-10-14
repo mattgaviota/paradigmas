@@ -19,6 +19,12 @@ class Ecuacion_Cuadratica():
         self.__c = float(c)
         self.__raices = None
 
+    def get_variables(self):
+        a = self.__a
+        b = self.__b
+        c = self.__c
+        return a, b, c
+
     def solve(self, band=0):
         '''Se encarga de resolver la ecuación de acuerdo a la formula
         para resolver las ecuaciones cuadráticas. Devuelve las raices
@@ -59,6 +65,7 @@ class Ecuacion_Cuadratica():
             self.__raices = self.solve(1) # raices reales e iguales
         if dis == 3:
             self.__raices = self.solve(2) # raices complejas y conjugadas
+        return self.__raices
 
     def vertice(self):
         '''Calcula vértice de la ecuación'''
@@ -74,26 +81,24 @@ class Ecuacion_Cuadratica():
         print
         print '(%s,%s)' % (h, k)
 
-    def mostrar_ecuacion_factorizada(self):
+    def ecuacion_factorizada(self):
         '''Muestra la ecuación factorizada de acuerdo a sus raices'''
         self.resolver_ecuacion()
         r1, r2 = self.__raices
-        print 'Factorización : '
-        print
         if r2 == 'd':
             if r1 >= 0:
-                print '(X - %s)^2' % r1,
+                return '(X - %s)^2' % r1,
             else:
-                print '(X + %s)^2' % r1,
+                return '(X + %s)^2' % r1,
         else:
             if r1 >= 0 and r2 >= 0:
-                print '(X - %s) * (X - %s)' % (r1, r2)
+                return '(X - %s) * (X - %s)' % (r1, r2)
             elif r1 >= 0 and r2 <= 0:
-                print '(X - %s) * (X + %s)' % (r1, -1 * r2)
+                return '(X - %s) * (X + %s)' % (r1, -1 * r2)
             elif r1 <= 0 and r2 <= 0:
-                print '(X + %s) * (X + %s)' % (-1 * r1, -1 * r2)
+                return '(X + %s) * (X + %s)' % (-1 * r1, -1 * r2)
             elif r1 <= 0 and r2 >= 0:
-                print '(X + %s) * (X - %s)' % (-1 * r1, r2)
+                return '(X + %s) * (X - %s)' % (-1 * r1, r2)
 
     def mostrar_raices(self):
         '''Muestra las raices de la ecuación'''
@@ -107,7 +112,7 @@ class Ecuacion_Cuadratica():
         h, k = self.vertice()
         ax = plt.subplot(111)
 
-        t = np.arange(-30.0, 30.0, 0.01)
+        t = np.arange(h - 20, k + 20.0, 0.01)
         s = a * (t ** 2) + b * t + c
         line, = plt.plot(t, s, lw=2)
         
@@ -129,7 +134,8 @@ def main():
     os.system('clear')
     ec = Ecuacion_Cuadratica(a, b, c)
     ec.mostrar_raices()
-    ec.mostrar_ecuacion_factorizada()
+    print 'factorizacion : '
+    print ec.ecuacion_factorizada()
     ec.mostrar_vertice()
     ec.graficar()
 
