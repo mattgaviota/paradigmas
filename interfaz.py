@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
+# importamos el modulo para expresiones regulares
 import re
 
+# importamos el modulo que hace los calculos
 from ecuacion import Ecuacion_Cuadratica
 
+# importamos los modulos para la interfaz
 import Tkinter as tk
-from tkMessageBox import showinfo, showerror
+from tkMessageBox import showerror
 
 
 class Main_app:
@@ -66,7 +69,7 @@ class Main_app:
         
         self.vertice_entry = tk.Entry(self.main_frame,
             textvariable=self.vertice,bg='#c8c8c8', state='readonly')
-        self.vertice_entry.grid(row=4, column=4, columnspan=2)
+        self.vertice_entry.grid(row=4, column=3, columnspan=2)
 
         '''Etiqueta de la factorizacion'''
         self.factorizacion_label = tk.Label(self.main_frame,
@@ -81,23 +84,24 @@ class Main_app:
         '''Boton para graficar'''
         self.btn_graficar = tk.Button(self.main_frame, text="Graficar",
             command=self.graficar, relief=tk.FLAT, bg='#c8c8c8', bd=0)
-        self.btn_graficar.grid(row=2, column=2)
+        self.btn_graficar.grid(row=2, column=2, sticky=tk.W + tk.E)
 
         '''Boton para limpiar los resultados'''
         self.btn_limpiar = tk.Button(self.main_frame, text="Limpiar",
             command=self.clean, relief=tk.FLAT, bg='#c8c8c8', bd=0)
-        self.btn_limpiar.grid(row=2, column=3, sticky=tk.E + tk.W)
+        self.btn_limpiar.grid(row=2, column=3, sticky=tk.W + tk.E)
         
         '''Boton para hacer los calculos'''
         self.btn_raices = tk.Button(self.main_frame, text="Calcular",
             command=self.calcular, relief=tk.FLAT, bg='#c8c8c8', bd=0)
-        self.btn_raices.grid(row=2, column=1, sticky=tk.E + tk.W)
+        self.btn_raices.grid(row=2, column=1, sticky=tk.W + tk.E)
 
         '''Boton para salir'''
         self.btn_raices = tk.Button(self.main_frame, text="Salir",
             command=quit, relief=tk.FLAT, bg='#c8c8c8', bd=0)
-        self.btn_raices.grid(row=2, column=4, columnspan=2, sticky=tk.E + tk.W)
-        
+        self.btn_raices.grid(row=2, column=4, columnspan=2, sticky=tk.W + tk.E)
+
+    # Metodos
     def clean(self):
         '''
         Función para limpiar todos los campos
@@ -119,6 +123,7 @@ class Main_app:
         self.ecuacion.graficar()
 
     def analizar_entrada(self, a, b, c):
+        '''Funcion que analiza la entrada y la valida'''
         re_a = re.match(self.reg, a)
         re_b = re.match(self.reg, b)
         re_c = re.match(self.reg, c)
@@ -128,6 +133,8 @@ class Main_app:
             return False
 
     def calcular(self):
+        '''Funcion que calcula y muestra las raices, el vertice y
+        y la ecuación factorizada'''
         a = self.a.get()
         b = self.b.get()
         c = self.c.get()
