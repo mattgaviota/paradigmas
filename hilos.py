@@ -24,7 +24,6 @@ def genera_lista(num):
             lista.append(float(r))
         else:
             lista.append(r)
-        print '.',
     return lista
 
 
@@ -35,10 +34,10 @@ def divide_lista(lista, divisor):
 
 def main():
     longitud = raw_input('Ingrese la cantidad de elementos de la lista : ')
-    cantidad_de_hilos = raw_input('Ingrese la cantidad de hilos a ejecutar : ')
+    num_de_hilos = raw_input('Ingrese la cantidad de hilos a ejecutar : ')
     print "Generando lista de números aleatorios....."
     lista = genera_lista(int(longitud))
-    divisiones = [y for y in divide_lista(lista, int(cantidad_de_hilos))]
+    divisiones = [y for y in divide_lista(lista, int(num_de_hilos))]
     print 'Iniciando suma de la lista de %s elementos' % (len(lista), )
     s = time.time()
     hilos = []
@@ -48,10 +47,9 @@ def main():
          hilos.append(hilo)
     suma = 0
     for hilo in hilos:
-        #hilo.start()
         hilo.join()
         suma += hilo.status
-    print 'Suma con threads: '
+    print 'Suma con %s threads: ' % (num_de_hilos, )
     print suma
     print 'Tiempo total = %f' % (time.time() - s)
     print 'Suma sin threads: '

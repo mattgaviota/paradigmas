@@ -35,10 +35,10 @@ def divide_lista(lista, divisor):
 
 def main():
     longitud = raw_input('Ingrese la cantidad de elementos de la lista : ')
-    cantidad_de_hilos = raw_input('Ingrese la cantidad de hilos a ejecutar : ')
+    num_de_procesos = raw_input('Ingrese el número de procesos a correr : ')
     print "Generando lista de números aleatorios....."
     lista = genera_lista(int(longitud))
-    divisiones = [y for y in divide_lista(lista, int(cantidad_de_hilos))]
+    divisiones = [y for y in divide_lista(lista, int(num_de_procesos))]
     print 'Iniciando suma de la lista de %s elementos' % (len(lista), )
     cola = Queue()
     s = time.time()
@@ -49,14 +49,12 @@ def main():
          hilos.append(hilo)
     suma = 0
     for hilo in hilos:
-        #hilo.start()
-        #hilo.join()
         suma += hilo.cola.get()
         hilo.join()
-    print 'Suma con threads: '
+    print 'Suma con %s Procesos : ' % (num_de_procesos)
     print suma
     print 'Tiempo total = %f' % (time.time() - s)
-    print 'Suma sin threads: '
+    print 'Suma sin procesos: '
     t = time.time()
     print sum(lista)
     print 'Tiempo total = %f' % (time.time() - t)
