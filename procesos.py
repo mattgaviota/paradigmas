@@ -2,18 +2,18 @@
 #-*- coding: utf-8 -*-
 
 from random import randint
-from multiprocessing import Process
+from multiprocessing import Process, Queue
 import time
 
 class Hilo(Process):
 
-    def __init__(self, lista=[], status=0):
+    def __init__(self, lista=[], cola=None):
         Process.__init__(self)
         self.lista = lista
-        self.status = status
+        self.cola = cola
 
     def run(self):
-        self.status = sum(self.lista)
+        self.cola.put(sum(self.lista))
 
 
 def genera_lista(num):
@@ -40,18 +40,18 @@ def main():
     lista = genera_lista(int(longitud))
     divisiones = [y for y in divide_lista(lista, int(cantidad_de_hilos))]
     print 'Iniciando suma de la lista de %s elementos' % (len(lista), )
+    cola = Queue()
     s = time.time()
     hilos = []
     for listas in divisiones:
-         hilo = Hilo(listas)
+         hilo = Hilo(listas,cola)
          hilo.start()
          hilos.append(hilo)
     suma = 0
     for hilo in hilos:
         #hilo.start()
         #hilo.join()
-        print hilo.status
-        suma += hilo.status
+        suma += hilo.cola.get()
         hilo.join()
     print 'Suma con threads: '
     print suma
