@@ -7,6 +7,13 @@ import time
 import os
 
 
+def sumalista(lista):
+    suma = 0
+    for i in lista:
+        suma += i
+    return suma
+
+
 class Hilo(Thread):
 
     def __init__(self, lista):
@@ -15,12 +22,12 @@ class Hilo(Thread):
         self.suma = 0
 
     def run(self):
-        self.status = sum(self.lista)
+        self.status = sumalista(self.lista)
 
 
 def genera_lista(num):
     lista = []
-    diez = num/10.0
+    diez = num / 10.0
     for x in xrange(num):
         r = randint(0, 5000)
         if r % 2 != 0:
@@ -28,15 +35,18 @@ def genera_lista(num):
         else:
             lista.append(r)
         if x % diez == 0:
-            porcentaje = x*100.0/num
+            porcentaje = x * 100 / num
             print porcentaje, '%'
+        elif x == num - 1:
+            print '100 %'
     return lista
 
 
 def divide_lista(lista, divisor):
-    otro = len(lista)/divisor
+    otro = len(lista) / divisor
     for i in xrange(divisor):
-        yield lista[otro*i:otro*(i+1)]
+        yield lista[otro * i:otro * (i + 1)]
+
 
 def main():
     longitud = raw_input('Ingrese la cantidad de elementos de la lista : ')
@@ -48,20 +58,20 @@ def main():
     s = time.time()
     hilos = []
     for listas in divisiones:
-         hilo = Hilo(listas)
-         hilo.start()
-         hilos.append(hilo)
+        hilo = Hilo(listas)
+        hilo.start()
+        hilos.append(hilo)
     suma = 0
     for hilo in hilos:
         hilo.join()
         suma += hilo.status
     print 'Suma con %s threads: ' % (num_de_hilos, )
     print suma
-    print 'Tiempo total = %f' % (time.time() - s)
+    print 'Tiempo total = %f segundos' % (time.time() - s)
     print 'Suma sin threads: '
     t = time.time()
-    print sum(lista)
-    print 'Tiempo total = %f' % (time.time() - t)
+    print sumalista(lista)
+    print 'Tiempo total = %f segundos' % (time.time() - t)
 
 if __name__ == '__main__':
     main()

@@ -5,6 +5,14 @@ from random import randint
 from multiprocessing import Process, Queue
 import time
 
+
+def sumalista(lista):
+    suma = 0
+    for i in lista:
+        suma += i
+    return suma
+
+
 class Hilo(Process):
 
     def __init__(self, lista=[], cola=None):
@@ -13,12 +21,12 @@ class Hilo(Process):
         self.cola = cola
 
     def run(self):
-        self.cola.put(sum(self.lista))
+        self.cola.put(sumalista(self.lista))
 
 
 def genera_lista(num):
     lista = []
-    diez = num/10.0
+    diez = num / 10.0
     for x in xrange(num):
         r = randint(0, 5000)
         if r % 2 != 0:
@@ -26,15 +34,18 @@ def genera_lista(num):
         else:
             lista.append(r)
         if x % diez == 0:
-            porcentaje = x*100.0/num
+            porcentaje = x * 100 / num
             print porcentaje, '%'
+        elif x == num - 1:
+            print '100 %'
     return lista
 
 
 def divide_lista(lista, divisor):
-    otro = len(lista)/divisor
+    otro = len(lista) / divisor
     for i in xrange(divisor):
-        yield lista[otro*i:otro*(i+1)]
+        yield lista[otro * i:otro * (i + 1)]
+
 
 def main():
     longitud = raw_input('Ingrese la cantidad de elementos de la lista : ')
@@ -47,20 +58,20 @@ def main():
     s = time.time()
     hilos = []
     for listas in divisiones:
-         hilo = Hilo(listas,cola)
-         hilo.start()
-         hilos.append(hilo)
+        hilo = Hilo(listas, cola)
+        hilo.start()
+        hilos.append(hilo)
     suma = 0
     for hilo in hilos:
         suma += hilo.cola.get()
         hilo.join()
     print 'Suma con %s Procesos : ' % (num_de_procesos)
     print suma
-    print 'Tiempo total = %f' % (time.time() - s)
+    print 'Tiempo total = %f segundos' % (time.time() - s)
     print 'Suma sin procesos: '
     t = time.time()
-    print sum(lista)
-    print 'Tiempo total = %f' % (time.time() - t)
+    print sumalista(lista)
+    print 'Tiempo total = %f segundos' % (time.time() - t)
 
 if __name__ == '__main__':
     main()
