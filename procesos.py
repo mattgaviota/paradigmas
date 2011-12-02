@@ -18,13 +18,16 @@ class Hilo(Process):
 
 def genera_lista(num):
     lista = []
+    diez = num/10.0
     for x in xrange(num):
         r = randint(0, 5000)
         if r % 2 != 0:
             lista.append(float(r))
         else:
             lista.append(r)
-        #print '.',
+        if x % diez == 0:
+            porcentaje = x*100.0/num
+            print porcentaje, '%'
     return lista
 
 
