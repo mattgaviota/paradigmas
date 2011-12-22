@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
+#imports
+
 from random import randint
 from multiprocessing import Process, Queue
 import time
